@@ -5,6 +5,9 @@ A stick-figure performance studio. Type a line and a character says it; describe
 scene and they walk, point at a board, act it out.
 
 ---
+
+<img width="1105" height="632" alt="stickman" src="https://github.com/user-attachments/assets/faa181ba-46f1-46e6-97fd-a0914b3d1edc" />
+
 ## Step 1: Run it
 # Run
 
