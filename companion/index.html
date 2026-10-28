@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inkwell — Stick Performance Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a1915'/%3E%3Ccircle cx='32' cy='21' r='9' fill='none' stroke='%23f4f1ea' stroke-width='4'/%3E%3Cpath d='M32 30v16M32 36l-9 8M32 36l9 8M32 46l-7 12M32 46l7 12' fill='none' stroke='%23f4f1ea' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="companion.css">
+</head>
+<body data-theme="light" data-scene="paper">
+
+<div class="app">
+
+  <aside class="side">
+    <div class="side-head">
+      <div class="brand"><span class="mark">Inkwell</span><span class="tag">studio</span></div>
+      <div class="row">
+        <button id="openDrawer" class="ghost small">Panels</button>
+        <button id="collapseSide" class="ghost small" title="Hide panel">‹</button>
+      </div>
+    </div>
+
+    <div class="mode" id="modeSwitch" role="group" aria-label="Mode">
+      <button data-mode="single" class="on">Single</button>
+      <button data-mode="podcast">Room</button>
+    </div>
+
+    <section class="speak">
+      <div class="speak-head">
+        <span class="label" id="composeTitle">Speak</span>
+        <div class="seg tiny" id="ptabSwitch" hidden>
+          <button data-ptab="script">Script</button>
+          <button data-ptab="topic" class="on">Concept</button>
+        </div>
+      </div>
+
+      <div class="compose-page" data-compose="single">
+        <textarea id="text" rows="3" spellcheck="false" placeholder="Say something…">That is fantastic. I am really happy to hear that.</textarea>
+      </div>
+
+      <div class="compose-page" data-compose="script" hidden>
+        <div id="scriptList" class="script-list"></div>
+        <div class="row add-line">
+          <button id="addLineA" class="ghost small">+ line</button>
+          <button id="addLineB" class="ghost small">+ line</button>
+        </div>
+      </div>
+
+      <div class="compose-page" data-compose="topic" hidden>
+        <textarea id="topicText" rows="3" spellcheck="false"
+          placeholder="A concept, a brief, or the whole conversation"></textarea>
+      </div>
+
+      <div class="actions">
+        <button id="speak" class="primary">Speak</button>
+        <button id="speakActions" class="secondary">Perform</button>
+        <button id="act" class="ghost">Action</button>
+        <button id="stop" class="ghost">Stop</button>
+        <button id="sing" class="ghost">Sing</button>
+      </div>
+      <div class="actions sub">
+        <label class="check"><input id="mute" type="checkbox"> Mute</label>
+        <span class="status" id="status">idle</span>
+      </div>
+
+      <div class="length-row">
+        <span class="label">Length</span>
+        <div class="seg tiny" id="lengthSwitch">
+          <button data-len="short">Short</button>
+          <button data-len="medium" class="on">Medium</button>
+          <button data-len="long">Long</button>
+        </div>
+      </div>
+
+      <button id="voiceBtn" class="voice-btn" aria-expanded="false">
+        <span id="voiceBtnLabel">Voices</span><span class="chev">⌄</span>
+      </button>
+      <div id="voicePanel" class="voice-panel" hidden>
+        <label class="field"><span>Model</span><select id="model"></select></label>
+        <label class="field"><span>Voice</span><select id="voice"></select></label>
+        <label class="field"><span>Gesture</span><select id="speakGesture"><option value="none">auto</option></select></label>
+        <label class="field"><span>Emotion</span><select id="speakEmotion"><option value="auto">auto</option></select></label>
+      </div>
+    </section>
+
+    <section class="side-demo">
+      <details>
+        <summary>Demo <span class="hint-inline">try a sample</span></summary>
+        <div class="demo-grid">
+          <div class="demo-col">
+            <div class="demo-head">Speak</div>
+            <button class="demo-item" data-demo="speak" data-text="Hello! I am your stick companion. Ask me anything.">Greeting</button>
+            <button class="demo-item" data-demo="speak" data-text="That is wonderful news. I am really happy for you.">Good news</button>
+            <button class="demo-item" data-demo="speak" data-text="Hmm, I am not sure about that. Let me think for a moment.">Thinking</button>
+          </div>
+          <div class="demo-col">
+            <div class="demo-head">Perform</div>
+            <button class="demo-item" data-demo="perform" data-text="Welcome to the show!" data-emotion="happy" data-gesture="wave">Wave hello</button>
+            <button class="demo-item" data-demo="perform" data-text="Honestly, I have no idea what happened." data-emotion="confused" data-gesture="shrugOnce">Shrug</button>
+            <button class="demo-item" data-demo="perform" data-text="That was absolutely brilliant!" data-emotion="ecstatic" data-gesture="clapOnce">Applause</button>
+          </div>
+          <div class="demo-col">
+            <div class="demo-head">Action</div>
+            <button class="demo-item" data-demo="action" data-prompt="walks to the board and explains photosynthesis">Classroom</button>
+            <button class="demo-item" data-demo="action" data-prompt="delivers a pitch to investors at the board">The pitch</button>
+            <button class="demo-item" data-demo="action" data-prompt="lectures about marginal cost at the board">Marginal cost</button>
+            <button class="demo-item" data-demo="action" data-prompt="explains a rocket launch with a diagram on the board">Rocket launch</button>
+            <button class="demo-item" data-demo="action" data-prompt="moonwalks across the stage like Michael Jackson">Moonwalk</button>
+            <button class="demo-item" data-demo="action" data-prompt="does a ridiculous silly walk across the room">Silly walk</button>
+            <button class="demo-item" data-demo="action" data-prompt="a family around a table">Family dinner</button>
+            <button class="demo-item" data-demo="action" data-prompt="two fencers en garde, then clash">En garde</button>
+            <button class="demo-item" data-demo="action" data-prompt="daydreams and thinks about floating away">Daydream</button>
+            <button class="demo-item" data-demo="action" data-prompt="guides the audience on a tour of the room while explaining each stop">Guided tour</button>
+            <button class="demo-item" data-demo="action" data-prompt="celebrates with a dance and confetti">Celebrate</button>
+            <button class="demo-item" data-demo="action" data-prompt="shakes hands with a friend and says good job">Handshake</button>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="side-design">
+      <details>
+        <summary>Design <span class="hint-inline">look of the figure</span></summary>
+        <div class="design-grid">
+          <div class="design-row">
+            <span class="label">Apply to</span>
+            <div class="seg tiny" id="designTarget">
+              <button data-target="all" class="on">All</button>
+            </div>
+          </div>
+          <div class="design-row">
+            <span class="label">Base</span>
+            <div class="seg tiny" id="baseSwitch">
+              <button data-base="neutral" class="on">Neutral</button>
+              <button data-base="masculine">Male</button>
+              <button data-base="feminine">Female</button>
+            </div>
+          </div>
+          <div class="design-row">
+            <span class="label">Wear</span>
+            <div class="seg tiny" id="wearSwitch">
+              <button data-wear="none" class="on">None</button>
+              <button data-wear="crown">Crown</button>
+              <button data-wear="cape">Cape</button>
+              <button data-wear="dress">Dress</button>
+              <button data-wear="mic">Mic</button>
+            </div>
+          </div>
+          <div class="design-row">
+            <span class="label">Face</span>
+            <div class="seg tiny" id="faceSwitch">
+              <button data-face="none" class="on">None</button>
+              <button data-face="mustache">Mustache</button>
+              <button data-face="glasses">Glasses</button>
+              <button data-face="ears">Ears</button>
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="side-history">
+      <div class="hist-head">
+        <span class="hist-title">History</span>
+        <button id="clearHistory" class="ghost small clear">Clear</button>
+      </div>
+      <ol id="history" class="history"><li class="empty">Finished takes appear here.</li></ol>
+    </section>
+
+    <div class="side-footbar">
+      <div class="style-bar">
+        <span class="label">Style</span>
+        <div class="seg tiny" id="styleSwitch">
+          <button data-style="sketch">Sketch</button>
+          <button data-style="ink" class="on">Ink</button>
+          <button data-style="toon">Toon</button>
+        </div>
+      </div>
+      <div class="style-bar">
+        <span class="label">Body</span>
+        <div class="seg tiny" id="bodySwitch">
+          <button data-body="full" class="on">Full</button>
+          <button data-body="bust">Bust</button>
+        </div>
+      </div>
+      <div class="style-bar">
+        <span class="label">UI</span>
+        <div class="seg tiny" id="uiSwitch">
+          <button data-ui="minimal" class="on">Minimal</button>
+          <button data-ui="neo">Neo</button>
+        </div>
+      </div>
+      <div class="side-foot">
+        <span id="voiceState" class="chip">voice: checking</span>
+        <span id="latency" class="lat">—</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="stage-area" id="stageArea">
+    <button id="showSide" class="ghost small reopen" hidden>›</button>
+    <div class="stage-frame">
+      <svg id="stage" viewBox="18 24 64 64" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="Animated stick figures"></svg>
+    </div>
+    <div id="bubble" class="bubble" hidden><span id="bubbleText"></span></div>
+    <div class="zoom" id="zoomBar" role="group" aria-label="Stage controls">
+      <button id="gearBtn" class="tbtn gear" title="Stage controls" aria-expanded="false" aria-controls="tpPanel">
+        <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+          <circle cx="8" cy="8" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M8 1.4v1.8M8 12.8v1.8M1.4 8h1.8M12.8 8h1.8M3.3 3.3l1.3 1.3M11.4 11.4l1.3 1.3M12.7 3.3l-1.3 1.3M4.6 11.4l-1.3 1.3"
+                stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <span id="tpPanel" class="tp-panel">
+        <button id="zoomOut" title="Smaller">−</button>
+        <span class="level" id="zoomLevel">45%</span>
+        <button id="zoomIn" title="Bigger">+</button>
+        <button id="sizeBtn" class="tbtn" title="Stage size" aria-expanded="false" aria-controls="sizeGroup">
+          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+            <path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          </svg>
+        </button>
+        <span class="size-group" id="sizeGroup">
+          <button class="preset" data-zoom="0.20" title="Small — whole room">S</button>
+          <button class="preset on" data-zoom="0.45" title="Medium — default">M</button>
+          <button class="preset" data-zoom="0.80" title="Large — close up">L</button>
+        </span>
+        <span class="sep"></span>
+        <button id="playPause" class="tbtn" title="Play / pause the performance">▶</button>
+        <button id="seekBack" class="tbtn" title="Back one line">⏮</button>
+        <button id="seekFwd" class="tbtn" title="Forward one line">⏭</button>
+        <input id="scrub" class="scrub" type="range" min="0" max="100" value="0" step="1" title="Scrub the performance">
+        <select id="speedSel" class="speed" title="Playback speed">
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.5">1.5×</option>
+          <option value="2">2×</option>
+        </select>
+        <button id="fullBtn" class="tbtn" title="Full screen">⛶</button>
+        <span class="sep"></span>
+        <button id="recordBtn" class="rec" title="Record and download a video of the stage">⏺ Record</button>
+      </span>
+    </div>
+  </main>
+</div>
+
+<aside id="drawer" class="drawer" hidden>
+  <div class="drawer-head">
+    <div class="seg tiny" id="drawerTabs">
+      <button data-tab="perform" class="on">Activity</button>
+      <button data-tab="cast">Cast</button>
+      <button data-tab="scene">Scene</button>
+      <button data-tab="settings">Settings</button>
+    </div>
+    <button id="closeDrawer" class="ghost small">Close</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="page on" data-page="perform">
+      <h2>Performance</h2>
+      <ol id="timeline" class="timeline"><li class="empty">Nothing yet.</li></ol>
+      <details open>
+        <summary>Log</summary>
+        <ol id="log" class="log"></ol>
+      </details>
+    </div>
+
+    <div class="page" data-page="cast">
+      <h2>Cast</h2>
+      <div id="castList" class="cast"></div>
+      <button id="addSpeaker" class="ghost small">+ Add speaker</button>
+      <p class="help">Presentation and voice are independent. Preview speaks a sample.</p>
+    </div>
+
+    <div class="page" data-page="scene">
+      <h2>Scene</h2>
+      <div class="grid three" id="bgPresets"></div>
+      <input id="bgPrompt" class="text-input" placeholder="…or describe it: snowy forest at dusk">
+      <button id="bgApply" class="ghost small">Apply</button>
+      <p id="bgStatus" class="help"></p>
+    </div>
+
+    <div class="page" data-page="settings">
+      <h2>Providers</h2>
+      <div id="providerList" class="providers"></div>
+      <details class="provider-form">
+        <summary>Add provider</summary>
+        <label class="field"><span>Name</span><input id="pvName" placeholder="My Gemini"></label>
+        <label class="field"><span>Kind</span>
+          <select id="pvKind"><option value="tts">Text → speech</option><option value="llm">Planner</option></select>
+        </label>
+        <label class="field"><span>Model</span><input id="pvModel" placeholder="gemini-3.8-flash-lite-tts"></label>
+        <label class="field"><span>Voice</span><input id="pvVoice" placeholder="Charon"></label>
+        <label class="field"><span>Base URL</span><input id="pvBase" placeholder="https://api.inceptionlabs.ai/v1"></label>
+        <label class="field"><span>API key</span><input id="pvKey" type="password" placeholder="stored locally"></label>
+        <button id="pvSave" class="secondary small">Save provider</button>
+      </details>
+      <p class="help">Saved as JSON in this browser and sent only to your local service.</p>
+    </div>
+  </div>
+</aside>
+
+<div id="scrim" class="scrim" hidden></div>
+
+<script src="../js/presets.js"></script>
+<script src="../js/engine.js"></script>
+<script src="../js/figure.js"></script>
+<script src="../js/styles.js"></script>
+<script src="../js/scene.js"></script>
+<script src="../js/props.js"></script>
+<script src="../js/board.js"></script>
+<script src="../js/commands.js"></script>
+<script src="companion.js"></script>
+<script src="action.js"></script>
+<script src="scenes.js"></script>
+<script src="demos.js"></script>
+<script src="recorder.js"></script>
+<script src="tts-client.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
